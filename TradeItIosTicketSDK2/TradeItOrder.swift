@@ -33,10 +33,6 @@ public typealias TradeItPlaceOrderHandlers = (
     public var stopPrice: NSDecimalNumber?
     public var quoteLastPrice: NSDecimalNumber?
 
-    var tradeService: TradeItEquityTradeService? {
-        return linkedBrokerAccount?.equityTradeService
-    }
-
     override public var description: String { return "TradeItOrder: account [\(self.linkedBrokerAccount?.accountName ?? "")/\(self.linkedBrokerAccount?.accountNumber ?? "")], symbol [\(self.symbol ?? "")], action [\(String(describing: self.action.rawValue))], type [\(String(describing:self.type.rawValue))], expiration [\(String(describing: self.expiration.rawValue))], quantity [\(String(describing: self.quantity))], limitPrice [\(String(describing: self.limitPrice))], stopPrice [\(String(describing: self.stopPrice))], quote [\(String(describing: self.quoteLastPrice))], userDisabledMargin [\(String(describing: self.userDisabledMargin))]" }
 
     public override init() {
@@ -116,7 +112,7 @@ public typealias TradeItPlaceOrderHandlers = (
             )
         }
 
-        self.tradeService?.previewTrade(
+        self.linkedBrokerAccount?.equityTradeService?.previewTrade(
             previewPresenter.generateRequest(),
             onSuccess: { result in
                 onSuccess(
@@ -189,7 +185,7 @@ public typealias TradeItPlaceOrderHandlers = (
                         onSecurityQuestion(
                             securityQuestion,
                             { securityQuestionAnswer in
-                                self.tradeService?.answerSecurityQuestionPlaceOrder(securityQuestionAnswer, withCompletionBlock: handler)
+                                self.linkedBrokerAccount?.equityTradeService?.answerSecurityQuestionPlaceOrder(securityQuestionAnswer, withCompletionBlock: handler)
                             },
                             {
                                 handler(
@@ -208,7 +204,7 @@ public typealias TradeItPlaceOrderHandlers = (
                     }
                 }
             }
-            self.tradeService?.placeTrade(placeOrderRequest, withCompletionBlock: placeResponseHandler)
+            self.linkedBrokerAccount?.equityTradeService?.placeTrade(placeOrderRequest, withCompletionBlock: placeResponseHandler)
         }
     }
 }
