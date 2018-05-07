@@ -52,12 +52,16 @@
         return linkedBroker?.positionService
     }
     
-    internal var tradeService: TradeItEquityTradeService? {
-        return linkedBroker?.tradeService
+    internal var equityTradeService: TradeItEquityTradeService? {
+        return linkedBroker?.equityTradeService
     }
     
     internal var fxTradeService: TradeItFxTradeService? {
         return linkedBroker?.fxTradeService
+    }
+
+    internal var cryptoTradeService: TradeItCryptoTradeService? {
+        return linkedBroker?.cryptoTradeService
     }
     
     private var orderService: TradeItOrderService? {
@@ -169,14 +173,16 @@
         })
     }
     
-    public func cancelOrder(orderNumber: String,
-                            onSuccess: @escaping () -> Void,
-                            onSecurityQuestion: @escaping (
-                                TradeItSecurityQuestionResult,
-                                _ submitAnswer: @escaping (String) -> Void,
-                                _ onCancelSecurityQuestion: @escaping () -> Void
-                            ) -> Void,
-                            onFailure: @escaping (TradeItErrorResult) -> Void) {
+    public func cancelOrder(
+        orderNumber: String,
+        onSuccess: @escaping () -> Void,
+        onSecurityQuestion: @escaping (
+            TradeItSecurityQuestionResult,
+            _ submitAnswer: @escaping (String) -> Void,
+            _ onCancelSecurityQuestion: @escaping () -> Void
+        ) -> Void,
+        onFailure: @escaping (TradeItErrorResult) -> Void
+    ) {
         let request = TradeItCancelOrderRequest()
         request.accountNumber = self.accountNumber
         request.orderNumber = orderNumber
@@ -191,7 +197,10 @@
         )
     }
     
-    public func getTransactionsHistory(onSuccess: @escaping (TradeItTransactionsHistoryResult) -> Void, onFailure: @escaping (TradeItErrorResult) -> Void) {
+    public func getTransactionsHistory(
+        onSuccess: @escaping (TradeItTransactionsHistoryResult) -> Void,
+        onFailure: @escaping (TradeItErrorResult) -> Void
+    ) {
         let request = TradeItTransactionsHistoryRequest()
         request.accountNumber = self.accountNumber
         
